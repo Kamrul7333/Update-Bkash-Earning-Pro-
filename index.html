@@ -388,6 +388,15 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // Task links in serial order (as provided)
+        const taskLinks = [
+            "https://underworldviedo11233.blogspot.com/2026/04/bkash-earning-pro.html",
+            "<script src='//libtl.com/sdk.js' data-zone='10950951' data-sdk='show_10950951'></script>",
+            "https://omg10.com/4/10950962",
+            "<script src='//libtl.com/sdk.js' data-zone='10950951' data-sdk='show_10950951'></script>",
+            "https://omg10.com/4/10950962"
+        ];
+
         let userData = null;
 
         // INITIALIZE APP
@@ -437,18 +446,61 @@
             for (let i = 1; i <= 5; i++) {
                 const item = document.createElement('div');
                 item.className = 'task-item';
-                item.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="background: rgba(226, 19, 110, 0.1); color: var(--bKash-pink); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <div>
-                            <b style="display: block; font-size: 0.9rem;">Video Ad Task ${String(i).padStart(2, '0')}</b>
-                            <small>Reward: ৳৫.০০ (৩০ সে.)</small>
-                        </div>
-                    </div>
-                    <button id="btn-task-${i}" onclick="playAd(${i})" style="background: var(--bKash-pink); border: none; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer;">Start</button>
-                `;
+
+                // show the link (or script tag) as small text so admin can see it
+                const linkPreview = document.createElement('div');
+                linkPreview.style.display = 'flex';
+                linkPreview.style.alignItems = 'center';
+                linkPreview.style.gap = '12px';
+
+                const iconBox = document.createElement('div');
+                iconBox.style.background = 'rgba(226, 19, 110, 0.1)';
+                iconBox.style.color = 'var(--bKash-pink)';
+                iconBox.style.width = '40px';
+                iconBox.style.height = '40px';
+                iconBox.style.borderRadius = '10px';
+                iconBox.style.display = 'flex';
+                iconBox.style.justifyContent = 'center';
+                iconBox.style.alignItems = 'center';
+                iconBox.innerHTML = '<i class="fas fa-play"></i>';
+
+                const meta = document.createElement('div');
+                meta.innerHTML = `<b style="display: block; font-size: 0.9rem;">Video Ad Task ${String(i).padStart(2, '0')}</b><small>Reward: ৳৫.০০ (৩০ সেকেন্ড)</small>`;
+
+                linkPreview.appendChild(iconBox);
+                linkPreview.appendChild(meta);
+
+                const controls = document.createElement('div');
+                controls.style.display = 'flex';
+                controls.style.flexDirection = 'column';
+                controls.style.gap = '8px';
+
+                // preview of link/script
+                const previewBox = document.createElement('div');
+                previewBox.style.fontSize = '0.75rem';
+                previewBox.style.color = '#aaa';
+                previewBox.style.maxWidth = '200px';
+                previewBox.style.wordBreak = 'break-all';
+                previewBox.innerText = taskLinks[i-1];
+
+                const startBtn = document.createElement('button');
+                startBtn.id = `btn-task-${i}`;
+                startBtn.style.background = 'var(--bKash-pink)';
+                startBtn.style.border = 'none';
+                startBtn.style.color = 'white';
+                startBtn.style.padding = '8px 15px';
+                startBtn.style.borderRadius = '8px';
+                startBtn.style.fontWeight = 'bold';
+                startBtn.style.cursor = 'pointer';
+                startBtn.innerText = 'Start';
+                startBtn.onclick = () => playAd(i);
+
+                controls.appendChild(previewBox);
+                controls.appendChild(startBtn);
+
+                item.appendChild(linkPreview);
+                item.appendChild(controls);
+
                 taskBox.appendChild(item);
             }
         }
@@ -485,6 +537,31 @@
                     const btn = document.getElementById(`btn-task-${id}`);
                     btn.disabled = true;
                     btn.innerText = "Processing...";
+
+                    // open link or inject script for this task
+                    const tlink = taskLinks[id - 1];
+                    try {
+                        if (tlink && tlink.trim().startsWith('<script')) {
+                            // parse script tag and inject it so SDK loads
+                            const temp = document.createElement('div');
+                            temp.innerHTML = tlink.trim();
+                            const s = temp.querySelector('script');
+                            if (s) {
+                                const script = document.createElement('script');
+                                if (s.src) script.src = s.src;
+                                // copy data-* attributes
+                                for (let i = 0; i < s.attributes.length; i++) {
+                                    const attr = s.attributes[i];
+                                    if (attr.name.startsWith('data-')) script.setAttribute(attr.name, attr.value);
+                                }
+                                document.body.appendChild(script);
+                            }
+                        } else if (tlink && (tlink.startsWith('http://') || tlink.startsWith('https://'))) {
+                            window.open(tlink, '_blank');
+                        }
+                    } catch (e) {
+                        console.error('Error opening/injecting task link:', e);
+                    }
 
                     let seconds = 30;
                     const countdown = setInterval(async () => {
