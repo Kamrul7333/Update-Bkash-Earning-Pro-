@@ -266,11 +266,11 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0;">
                     <span style="font-weight: 500; color: #eee;">📢 অফিশিয়াল গ্রুপ</span>
-                    <a href="https://t.me/+9Gb1YbLTDWJkN2Fl" target="_blank" style="background: #0088cc; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">যোগ দিন</a>
+                    <a href="https://t.me/+9Gb1YbLTDWJkN2Fl" target="_blank" style="background: #0088cc; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">Join</a>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                     <span style="font-weight: 500; color: #eee;">🎥 কাজ বুঝতে ভিডিও দেখুন</span>
-                    <a href="https://t.me/bkash_earning_method/2" target="_blank" style="background: var(--bKash-pink); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">দেখুন</a>
+                    <a href="https://t.me/bkash_earning_method/2" target="_blank" style="background: var(--bKash-pink); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">Watch</a>
                 </div>
             </div>
 
@@ -327,8 +327,8 @@
                     <input type="tel" id="phone" placeholder="017XXXXXXXX">
                 </div>
                 <div class="input-group">
-                    <label for="amount">অ্যামাউন্ট (মিনিমাম ১০০)</label>
-                    <input type="number" id="amount" placeholder="100">
+                    <label for="amount">অ্যামাউন্ট (মিনিমাম ৩০০)</label>
+                    <input type="number" id="amount" placeholder="300">
                 </div>
                 <button class="copy-btn" onclick="handleWithdraw()">উইথড্র রিকোয়েস্ট পাঠান</button>
             </div>
@@ -439,7 +439,7 @@
                 item.className = 'task-item';
                 item.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="background: rgba(226, 19, 110, 0.1); color: var(--bKash-pink); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem;">
+                        <div style="background: rgba(226, 19, 110, 0.1); color: var(--bKash-pink); width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
                             <i class="fas fa-play"></i>
                         </div>
                         <div>
@@ -447,7 +447,7 @@
                             <small>Reward: ৳৫.০০ (৩০ সে.)</small>
                         </div>
                     </div>
-                    <button id="btn-task-${i}" onclick="playAd(${i})" style="background: var(--bKash-pink); border: none; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 80px;">Start</button>
+                    <button id="btn-task-${i}" onclick="playAd(${i})" style="background: var(--bKash-pink); border: none; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer;">Start</button>
                 `;
                 taskBox.appendChild(item);
             }
@@ -525,14 +525,14 @@
             if (userData.referCount < 15) {
                 return tg.showAlert("⚠️ উইথড্র করতে কমপক্ষে ১৫টি রেফার লাগবে।");
             }
-            if (!phone || amount < 100) {
-                return tg.showAlert("❌ সঠিক নম্বর এবং নূন্যতম ১০০ টাকা দিন।");
+            if (!phone || amount < 300) {
+                return tg.showAlert("❌ সঠিক নম্বর এবং নূন্যতম ৩০০ টাকা দিন।");
             }
             if (amount > userData.balance) {
                 return tg.showAlert("❌ আপনার ব্যালেন্স পর্যাপ্ত নয়।");
             }
 
-            tg.showAlert(`✅ উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!\nনাম্বার: ${phone}\nপরিমাণ: ৳${amount}\n২৪ ঘন্টায় পাবেন।`);
+            tg.showAlert(`✅ উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!\nনাম্বার: ${phone}\nপরিমাণ: ৳${amount}\n২৪ ঘণ্টার মধ্যে পেবেন।`);
             document.getElementById('phone').value = '';
             document.getElementById('amount').value = '';
         };
